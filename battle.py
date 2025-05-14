@@ -287,10 +287,10 @@ def draw_hp_bar(name, x, y, hp, max_hp):
     draw_text(f"HP: {hp}/{max_hp}", x, y + 20)
 
 def draw_dialog_box(message):
-    pygame.draw.rect(screen, WHITE, (20, 400, 760, 80))
-    pygame.draw.rect(screen, BLACK, (20, 400, 760, 80), 4)
+    pygame.draw.rect(screen, WHITE, (40, 400, 710, 80))
+    pygame.draw.rect(screen, BLACK, (40, 400, 710, 80), 4)
     for i, line in enumerate(message.split('\n')):
-        draw_text(line, 40, 410 + i * 25, dialog_font)
+        draw_text(line, 50, 415 + i * 25, dialog_font)
 
 def draw_attack_buttons(moves, mouse_pos):
     button_width = 350
@@ -351,7 +351,7 @@ def ataque_do_inimigo(inimigo):
     return atk_nome, atk_dano
 
 def show_battle_intro(enemy_name, background_img, player_img, enemy_img):
-    intro_texts = [f"Um inimigo apareceu: {enemy_name}!", "Vai, Nala!"]
+    intro_texts = [f"Um inimigo apareceu: {enemy_name}!", "Vamos Combater, Nala!"]
     for text in intro_texts:
         fade_text(text)
         pygame.time.delay(800)
