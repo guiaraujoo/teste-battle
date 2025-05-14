@@ -1,30 +1,33 @@
-Sistema de Batalha - LimpAttack
-Este repositório contém o módulo inicial de um sistema de batalha estilo Pokémon, desenvolvido em Python com Pygame. Este sistema será incorporado futuramente ao jogo LimpAttack, um jogo educativo que aborda temas de higiene pessoal e saúde.
+# Sistema de Batalha - LimpAttack
 
-🎮 Sobre o Sistema
-O arquivo battle.py implementa a lógica de uma batalha entre dois personagens:
+Este repositório contém o módulo inicial de um **sistema de batalha estilo Pokémon**, desenvolvido em **Python com Pygame**. Este sistema será incorporado futuramente ao jogo **LimpAttack**, um jogo educativo que aborda temas de higiene pessoal e saúde.
 
-Nala – a personagem principal.
+## 🎮 Sobre o Sistema
 
-Inimigos – representam problemas relacionados à falta de higiene.
+O arquivo `battle.py` implementa a lógica de uma batalha entre dois personagens:
 
-O jogo usa animações de transição, como fade (transição escura) e intro (animação de entrada dos personagens), e um sistema de combate baseado em turnos com efeitos visuais, textos dinâmicos e controle de eventos.
+- **Nala** – a personagem principal.
+- **Inimigos** – representam problemas relacionados à falta de higiene (como "Cárie", "Caspa", "Bactéria do Pé", etc).
 
-🛠 Funcionalidades
-Transição de tela com efeitos de fade.
+O jogo utiliza animações e interações para simular combates por turnos, com efeitos visuais, barra de vida, ataques e mensagens de combate.
 
-Animação de entrada dos personagens (intro de batalha).
+## 🛠 Funcionalidades
 
-Sistema de turnos com ataque da Nala e do inimigo.
+- Animações de transição (`fade in` e `fade out`)
+- Introdução animada à batalha
+- Combate em turnos com escolha de ataques
+- Detecção de vitória ou derrota
+- Interface gráfica com botões e efeitos de clique
 
-Detecção de fim de batalha com transição.
+## 📁 Estrutura do Código
 
-Interface com textos animados (efeito de digitação).
+- `battle.py`: Código principal da batalha, incluindo lógica, interface e transições.
+- As imagens e assets utilizadas estão no mesmo diretório organizados conforme o código.
 
-📁 Estrutura
-battle.py: Código principal da batalha.
+## 📌 Observações
 
-assets/: Contém sprites, fontes, backgrounds, etc.
+- Este projeto está em fase de protótipo.
+- Ele serve como base para o sistema de combate do jogo LimpAttack.
+- A estrutura modular permite que ele seja facilmente adaptado e expandido.
+- Contribuições e sugestões são bem-vindas!
 
-📌 Observações
-Este sistema está em fase inicial de desenvolvimento e será expandido e refinado conforme for incorporado ao LimpAttack. Contribuições e sugestões são bem-vindas!
