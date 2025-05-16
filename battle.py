@@ -8,7 +8,7 @@ pygame.init()
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # Tamanho da tela
-WIDTH, HEIGHT = 800, 600
+WIDTH, HEIGHT = 800, 533
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Batalha Pokémon")
 
@@ -35,7 +35,7 @@ enemy_images = {
     "Bactéria do Pé": pygame.transform.scale(pygame.image.load("bacteria_pe.png"), (150, 150)),
     "Gordura na Pele": pygame.transform.scale(pygame.image.load("gordura.png"), (150, 150)),
     "Bactéria de Resfriado": pygame.transform.scale(pygame.image.load("resfriado.png"), (150, 150)),
-    # "Mão Podre": pygame.transform.scale(pygame.image.load("mao_podre.png"), (150, 150)),
+    "Mão Podre": pygame.transform.scale(pygame.image.load("mao_podre.png"), (150, 150)),
 }
 
 # Variável de Controle
@@ -232,6 +232,9 @@ def fade_in():
         pygame.display.flip()
         pygame.time.delay(20)
 
+
+   
+
 # Função para aplicar animação de fade out
 def fade_out():
     alpha = 0
@@ -286,54 +289,83 @@ def draw_hp_bar(name, x, y, hp, max_hp):
     pygame.draw.rect(screen, GREEN, (x, y, bar_width * hp_ratio, bar_height))
     draw_text(f"HP: {hp}/{max_hp}", x, y + 20)
 
+
+
 def draw_dialog_box(message):
-    pygame.draw.rect(screen, WHITE, (40, 400, 710, 80))
-    pygame.draw.rect(screen, BLACK, (40, 400, 710, 80), 4)
+    
+    box_width = 280
+    box_height = 90
+    box_x = WIDTH - box_width - 20
+    box_y = HEIGHT - box_height - 20
+    
+    pygame.draw.rect(screen, WHITE, (box_x, box_y, box_width, box_height), border_radius=10)
+    pygame.draw.rect(screen, BLACK, (box_x, box_y, box_width, box_height), 3)
     for i, line in enumerate(message.split('\n')):
-        draw_text(line, 50, 415 + i * 25, dialog_font)
+        draw_text(line, box_x + 10, box_y + 10 + i * 20, dialog_font)
 
 def draw_attack_buttons(moves, mouse_pos):
-    button_width = 350
-    button_height = 40
-    y_offset = 490
-    x_offset_left = 40
-    x_offset_right = 400  # A posição para o segundo conjunto de botões
+    # Caixa que envolve os botões
+    container_x = 10
+    container_y = 433  # 533 - 100 (nova altura)
+    container_width = 480
+    container_height = 100
+    container_rect = pygame.Rect(container_x, container_y, container_width, container_height)
+
+    # Desenha a caixa de fundo
+    pygame.draw.rect(screen, WHITE, container_rect, border_radius=15)
+    pygame.draw.rect(screen, BLACK, container_rect, 3, border_radius=15)
+
+    # Configuração dos botões
+    button_width = 220
+    button_height = 40  # novo valor
+    spacing_x = 10
+    spacing_y = 5
+    start_x = container_x + 10
+    start_y = container_y + 10
 
     for i, move in enumerate(moves):
-        # Define a cor do botão
-        if i < 2:
-            button_rect = pygame.Rect(x_offset_left, y_offset + i * (button_height + 10), button_width, button_height)
-        else:
-            button_rect = pygame.Rect(x_offset_right, y_offset + (i - 2) * (button_height + 10), button_width, button_height)
-        
-        # Verifica se o mouse está sobre o botão
-        if button_rect.collidepoint(mouse_pos):
-            pygame.draw.rect(screen, LIGHT_ORANGE, button_rect, border_radius=15)
-        else:
-            pygame.draw.rect(screen, GRAY, button_rect, border_radius=15)
-        
-        pygame.draw.rect(screen, BLACK, button_rect, 3)  # Borda preta
+        col = i % 2
+        row = i // 2
+        x = start_x + col * (button_width + spacing_x)
+        y = start_y + row * (button_height + spacing_y)
 
+        button_rect = pygame.Rect(x, y, button_width, button_height)
+
+        if button_rect.collidepoint(mouse_pos):
+            pygame.draw.rect(screen, LIGHT_ORANGE, button_rect, border_radius=10)
+        else:
+            pygame.draw.rect(screen, GRAY, button_rect, border_radius=10)
+
+        pygame.draw.rect(screen, BLACK, button_rect, 2)
         draw_text(move.nome, button_rect.x + 10, button_rect.y + 10)
+
 
 def handle_button_click(mouse_pos, moves):
     global selected_move
-    button_width = 350
+    container_x = 10
+    container_y = 433
+    button_width = 220
     button_height = 40
-    y_offset = 490
-    x_offset_left = 40
-    x_offset_right = 400
+    spacing_x = 10
+    spacing_y = 5
+    start_x = container_x + 10
+    start_y = container_y + 10
 
     for i, move in enumerate(moves):
-        if i < 2:
-            button_rect = pygame.Rect(x_offset_left, y_offset + i * (button_height + 10), button_width, button_height)
-        else:
-            button_rect = pygame.Rect(x_offset_right, y_offset + (i - 2) * (button_height + 10), button_width, button_height)
+        col = i % 2
+        row = i // 2
+        x = start_x + col * (button_width + spacing_x)
+        y = start_y + row * (button_height + spacing_y)
 
+        button_rect = pygame.Rect(x, y, button_width, button_height)
         if button_rect.collidepoint(mouse_pos):
             selected_move = i
             return True
     return False
+
+
+
+
 
 def ataque_do_jogador(item_usado, inimigo):
     dano = item_usado.calcular_dano(inimigo.nome)
@@ -371,16 +403,17 @@ def transition_to_battle(background_img, player_img, enemy_img):
         # Personagens
         temp_player = player_img.copy()
         temp_player.set_alpha(alpha)
-        screen.blit(temp_player, (150, 220))
+        screen.blit(temp_player, (150, 300))
 
         temp_enemy = enemy_img.copy()
         temp_enemy.set_alpha(alpha)
-        screen.blit(temp_enemy, (550, 100))
+        screen.blit(temp_enemy, (550, 160))
 
         # Barras de vida e texto
         draw_hp_bar("Nala", 130, 70, player_hp, player_max_hp)
         draw_hp_bar(enemy.nome, 500, 350, enemy.hp, enemy.max_hp)
         draw_dialog_box("A batalha vai começar!")
+
 
         pygame.display.flip()
         pygame.time.delay(40)
@@ -436,7 +469,6 @@ fade_in()
 show_battle_intro(enemy.nome, background_img, player_img, enemy_img)
 
 
-
 while running:
     screen.blit(background_img, (0, 0))
     mouse_pos = pygame.mouse.get_pos()  # Posição do mouse
@@ -487,16 +519,16 @@ while running:
     if player_damage_flash % 2 == 1:
         tinted = player_img.copy()
         tinted.fill((255, 0, 0, 100), special_flags=pygame.BLEND_RGBA_MULT)
-        screen.blit(tinted, (150, 220))
+        screen.blit(tinted, (150, 300))
     else:
-        screen.blit(player_img, (150, 220))
+        screen.blit(player_img, (150, 300))
 
     if enemy.damage_flash % 2 == 1:
         tinted = enemy_img.copy()
         tinted.fill((255, 0, 0, 100), special_flags=pygame.BLEND_RGBA_MULT)
-        screen.blit(tinted, (550, 100))
+        screen.blit(tinted, (550, 160))
     else:
-        screen.blit(enemy_img, (550, 100))
+        screen.blit(enemy_img, (550, 160))
 
     if player_damage_flash > 0:
         player_damage_flash -= 1
